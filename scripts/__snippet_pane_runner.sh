@@ -11,14 +11,37 @@ fi
 # Get current directory
 CURRENT_DIR=$(tmux display-message -p '#{pane_current_path}')
 
-# Use pet to search for a snippet
+# Create a temporary directory for our fzf wrapper
+WRAPPER_DIR=$(mktemp -d)
+
+# Create an fzf wrapper that filters out links
+cat > "$WRAPPER_DIR/fzf" << 'EOF'
+#!/usr/bin/env bash
+# Filter out lines starting with [Link to before passing to real fzf
+# Add keybinding to launch tag browser
+grep -v '^\[Link to' | /usr/local/bin/fzf \
+    --bind "ctrl-g:execute(~/dev/dotfiles/scripts/__snippet_tag_browser.sh)+abort" \
+    --header " ctrl-g: browse by tag" \
+    "$@"
+EOF
+
+chmod +x "$WRAPPER_DIR/fzf"
+
+# Add our wrapper to PATH before the real fzf
+export PATH="$WRAPPER_DIR:$PATH"
+
+# Now pet will use our wrapped fzf!
 RESULT=$(pet search)
+
+# Clean up
+rm -rf "$WRAPPER_DIR"
 
 if [ -n "$RESULT" ]; then
     # Check if the command starts with xdg-open
     if [[ "$RESULT" =~ ^xdg-open[[:space:]] ]]; then
-        # Execute xdg-open directly in current pane
-        eval "$RESULT"
+        # Use tmux run-shell to execute in proper environment
+        tmux run-shell "$RESULT && wmctrl -a Firefox"
+        exit 0
     else
         # Create a new vertical split pane for other commands
         tmux split-window -v -c "$CURRENT_DIR"
