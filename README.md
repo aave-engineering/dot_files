@@ -20,7 +20,7 @@ Installation steps for Debian-based systems:
 
 1. Clone the repository:
 ```bash
-git clone https://github.com/hashrocket-engineering/dot_files/.git
+git clone https://github.com/aave-engineering/dot_files/.git
 cd dotfiles/install
 ```
 
@@ -52,9 +52,9 @@ ansible-playbook install.yml --tags "alacritty"
 
 Or run remotely:
 
-- `bash -c "$(curl -fsSL https://raw.githubusercontent.com/hashrocket-engineering/dot_files//master/install.sh)"`
+- `bash -c "$(curl -fsSL https://raw.githubusercontent.com/aave-engineering/dot_files//master/install.sh)"`
 
-- `curl https://raw.githubusercontent.com/hashrocket-engineering/dot_files//master/install.sh | bash -s -- ${GIT_USERNAME} ${GIT_EMAIL} ${GPG_KEY}`
+- `curl https://raw.githubusercontent.com/aave-engineering/dot_files//master/install.sh | bash -s -- ${GIT_USERNAME} ${GIT_EMAIL} ${GPG_KEY}`
 
 ### Runing `./install` will
 
@@ -111,7 +111,7 @@ For testing purposes, password is "test", use real password for real
 installation ofc :)
 
 ```bash
-wget https://raw.githubusercontent.com/hashrocket-engineering/dot_files//master/create-test-user.sh
+wget https://raw.githubusercontent.com/aave-engineering/dot_files//master/create-test-user.sh
 ```
 
 ```bash
